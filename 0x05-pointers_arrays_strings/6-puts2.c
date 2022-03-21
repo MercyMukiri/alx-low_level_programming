@@ -4,7 +4,7 @@
  * puts2 - prints every other character of a string,
  * starting with the first character, followed by a new line.
  *
- * @str - parameter for the puts2 function
+ * @str: parameter for the puts2 function
  *
  * Return : void
  */
