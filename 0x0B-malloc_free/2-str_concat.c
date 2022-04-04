@@ -19,10 +19,10 @@ char *str_concat(char *s1, char *s2)
 	char *ar;
 
 	if (s1 == NULL)
-		return (NULL);
+		s1 = "";
 
 	if (s2 == NULL)
-		return (NULL);
+		s2 = "";
 
 	s1_len = 0;
 
@@ -44,14 +44,8 @@ char *str_concat(char *s1, char *s2)
 	for (i = 0; i < s1_len; i++)
 		ar[i] = s1[i];
 
-	j = 0;
-
-	while (i <= length)
-	{
+	for (j = 0; i <= length; i++, j++)
 		ar[i] = s2[j];
-		i++;
-		j++;
-	}
 
 	return (ar);
 }
