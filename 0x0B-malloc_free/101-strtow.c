@@ -3,51 +3,31 @@
 #include <stdlib.h>
 
 /**
- * word_len - finds the length of a word
- *
- * @str: string parameter
- *
- * Return: length of the string
- */
-
-int word_len(char *str)
-{
-	int i = 0, len = 0;
-
-	while (*(str + i) && *(str + i) != ' ')
-	{
-		len++;
-		i++;
-	}
-
-	return (len);
-}
-
-/**
  * word_count - counts the number of words in a string
  *
  * @str: string parameter
  *
- * Return: number of words  in the string
+ * Return: number of words in the string
  */
 
 int word_count(char *str)
 {
-	int i = 0, len = 0, count = 0;
+	int i, len = 0;
 
-	for (i = 0; *(str + i) != '\0'; i++)
-		len++;
-
-	for (i = 0; i < len; i++)
+	for (i = 0; str[i]; i++)
 	{
-		if (*(str + i) != ' ')
+		if (str[i] == ' ')
 		{
-			count++;
-			i += word_len(str + i);
+			if (str[i + 1] != ' ' && str[i + 1] != '\0')
+				len++;
 		}
+		else if (i == 0)
+			len++;
 	}
 
-	return (count);
+	len++;
+
+	return (len);
 }
 
 /**
@@ -60,42 +40,44 @@ int word_count(char *str)
 
 char **strtow(char *str)
 {
-	int i, j, k, words, letters;
+	int i, j, k, l, words, wc = 0;
 	char **ptr;
 
-	if (str == NULL || str[0] == '\0')
+	if (str == NULL || *str == '\0')
 		return (NULL);
-
 	words = word_count(str);
-
-	if (words == 0)
+	if (words == 1)
 		return (NULL);
-
-	ptr = malloc(sizeof(char *) * (words + 1));
-
+	ptr = (char **)malloc(sizeof(char *) * words);
 	if (ptr == NULL)
 		return (NULL);
-
-	for (i = 0; i < words; i++)
+	ptr[words - 1] = NULL;
+	i = 0;
+	while (str[i])
 	{
-		while (*(str + j) == ' ')
-			j++;
-
-		letters = word_len(str + j);
-
-		ptr[i] = malloc(sizeof(char) * (letters + 1));
-
-		if (ptr[i] == NULL)
+		if (str[i] != ' ' && (i == 0 || str[i - 1] == ' '))
 		{
-			for (; i >= 0; i--)
-				free(ptr[i]);
-			free(ptr);
-			return (NULL);
+			for (j = 1; str[i + j] != ' ' && str[i + j]; j++)
+				;
+			j++;
+			ptr[wc] = (char *)malloc(sizeof(char) * j);
+			j--;
+			if (ptr[wc] == NULL)
+			{
+				for (k = 0; k < wc; k++)
+					free(ptr[k]);
+				free(ptr[words - 1]);
+				free(ptr);
+				return (NULL);
+			}
+			for (l = 0; l < j; l++)
+				ptr[wc][l] = str[i + l];
+			ptr[wc][l] = '\0';
+			wc++;
+			i += j;
 		}
-
-		for (k = 0; k < letters; k++)
-			ptr[i][k] = str[j++];
+		else
+			i++;
 	}
-
 	return (ptr);
 }
