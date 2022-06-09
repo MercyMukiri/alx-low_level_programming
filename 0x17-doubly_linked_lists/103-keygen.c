@@ -11,7 +11,7 @@
  * Return: 0 on success, 1 on error
  */
 
-int main(int __atribute__((__unused__)) argc, char *argv[])
+int main(int __attribute__((__unused__)) argc, char *argv[])
 {
 	char password[7], *codex;
 	int len = strlen(argv[1]), i, tmp;
